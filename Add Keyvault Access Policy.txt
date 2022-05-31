@@ -1,0 +1,5 @@
+$subId = "xxxxxxxx-4xxx-4xxx-xxxx-xxxxxxxxxxxx";
+$rg = "xxxxxxxxxxxx-rg";
+az account set -s $subId;
+az configure --defaults group=$rg;
+az keyvault set-policy --name keyvault-name --object-id xxxxxxxx-4xxx-4xxx-xxxx-xxxxxxxxxxxx --resource-group $rg --subscription $subId --secret-permissions get list;
