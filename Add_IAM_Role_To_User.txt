@@ -1,0 +1,9 @@
+#Scenario 
+# User-1 has owner role over a subscription and wants to give User-2 permissions to view the App Config / Settings of a Web API
+
+# Under the context of User-1, run the following commands
+
+az login
+$scope = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/your-rg-name/providers/Microsoft.Web/sites/your-web-site-name";
+$objectId = "11111111-1111-1111-1111-111111111111";
+az role assignment create --role "Contributor" --assignee $objectId --scope $"$scope"
