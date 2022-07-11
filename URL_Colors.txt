@@ -1,0 +1,7 @@
+Source - https://github.com/fej-snikduj/URLColors/
+
+Active - Checked
+Default Border Witdth - 15px
+Default Opacity - 1
+
+https://www.countdown.co.nz/, red, flash, 0.5
