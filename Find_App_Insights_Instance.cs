@@ -75,8 +75,8 @@ public class Program
             appInsightsClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             response = await appInsightsClient.GetAsync(appInsightsUri);
             data = await response.Content.ReadAsStringAsync();
-            var appInsightsInstance = JsonSerializer.Deserialize<AppInsightsList>(data) ?? new AppInsightsList();
-            var instance = appInsightsInstance.AppInsights.FirstOrDefault(x => string.Equals(x.Properties.InstrumentationKey, instrumentationKey, StringComparison.OrdinalIgnoreCase));
+            var appInsightsInstances = JsonSerializer.Deserialize<AppInsightsList>(data) ?? new AppInsightsList();
+            var instance = appInsightsInstances.AppInsights.FirstOrDefault(x => string.Equals(x.Properties.InstrumentationKey, instrumentationKey, StringComparison.OrdinalIgnoreCase));
             if (instance != null)
             {
                 Console.WriteLine($"Found app insights instance {instance.Name} with instrumentation key {instance.Properties.InstrumentationKey} in subscription {subscription.DisplayName}");
