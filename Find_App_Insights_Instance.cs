@@ -60,7 +60,6 @@ public class Program
         Uri baseUri = new Uri(@"https://management.azure.com/subscriptions?api-version=2020-01-01");
         client.BaseAddress = baseUri;
         client.DefaultRequestHeaders.Clear();
-        client.DefaultRequestHeaders.ConnectionClose = true;
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         var response = await client.GetAsync(baseUri);
         var data = await response.Content.ReadAsStringAsync();
@@ -73,7 +72,6 @@ public class Program
             var appInsightsUri = new Uri(@$"https://management.azure.com/subscriptions/{subscription.SubscriptionId}/providers/Microsoft.Insights/components?api-version=2015-05-01");
             appInsightsClient.BaseAddress = appInsightsUri;
             appInsightsClient.DefaultRequestHeaders.Clear();
-            appInsightsClient.DefaultRequestHeaders.ConnectionClose = true;
             appInsightsClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             response = await appInsightsClient.GetAsync(appInsightsUri);
             data = await response.Content.ReadAsStringAsync();
