@@ -1,4 +1,4 @@
-1. You can do a test by running this powershell command (Invoke-WebRequest https://api.nuget.org/v3/index.json) 
+You can do a test by running this powershell command (Invoke-WebRequest https://api.nuget.org/v3/index.json) 
 to make sure whether Microsoft Applications on your computer can connect to Internet or not. You should get a response within few milli-seconds. 
 If you don't then you have couple of options discussed below.
 
