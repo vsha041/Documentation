@@ -1,0 +1,11 @@
+1. You can do a test by running this powershell command (Invoke-WebRequest https://api.nuget.org/v3/index.json) to make sure whether Microsoft Applications on your computer can connect to Internet or not. You should get a response within few milli-seconds. If you don't then you have couple of options discussed below.
+
+A)DISABLE PROXY - To disable / clear the proxy settings that you see under IE -> Internet Options -> Connections -> LAN settings or under Windows Settings -> Network and Internet -> Proxy, you need to do two steps
+
+i) First you need allow users (including admins) to be able to change proxy settings. Start gpedit.msc and go to Local Computer Policy -> Computer Configuration -> Administrative Templates -> Windows Components -> Internet Explorer -> Prevent changing proxy settings -> Disable this setting.
+
+ii) You can start an admin command prompt and then run this command "C:\Program Files\Internet Explorer\iexplore.exe" -extoff. You can use Process Explorer Integrity column to verify if IE is running as an Admin or not. Then again go to IE -> Internet Options -> Connections -> LAN settings and uncheck "use automatic configuration script" and check "automatically detect settings" and click OK. This will also change the global windows proxy settings that you see under Settings -> Network and Internet -> Proxy.
+
+B)ENABLE PROXY - If you are using a VPN or ZPA (Zscaler Private Access), through which you can connect to company's network then you might be able to use Proxy. But it might require authentication. In that case, start IE "C:\Program Files\Internet Explorer\iexplore.exe" -extoff then try to visit any website like nba.com and make sure it opens. You may be redirected to an authentication page first. Also note that if the proxy address in the PAC file is not reachable after connecting to VPN or ZPA then there is no point trying to enable proxy because your Microsoft Apps will never be able to reach Internet. Just go with option A then as explained earlier.
+
+Reference - https://www.infopackets.com/news/9380/cant-change-internet-explorer-settings-proxy-server
