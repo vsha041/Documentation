@@ -1,3 +1,9 @@
+#Note that the object ID in the last command is of the enterprise application and not app registration. Let's say you want to add access policy for a service
+#connection. To find the service connection's object ID, first go to the service connection, then click on "Manage Service Principal" URL and then it will take you to
+#the azure portal. Copy the object ID from there and search it in Active Directory. If search results show app registration then ignore that and go back to ADO service
+#connections and click EDIT for the specific servie connection. Copy the service principal ID from there and search it in Azure Active Directory and then select
+#Enterprise Application search result and use it's object ID.
+
 $subId = "xxxxxxxx-4xxx-4xxx-xxxx-xxxxxxxxxxxx";
 $rg = "xxxxxxxxxxxx-rg";
 az account set -s $subId;
