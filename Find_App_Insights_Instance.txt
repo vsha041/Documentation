@@ -25,7 +25,7 @@ Write-Output "Opening browser window... Please login to your Azure account."
 az login | Out-Null
 
 $username = az account show --query user.name --output tsv;
-$subscriptions = az account subscription list --query [*].[subscriptionId,displayName] --output json | ConvertFrom-Json;
+$subscriptions = az account subscription list --query "[*].[subscriptionId,displayName]" --output json | ConvertFrom-Json;
 $totalSubscriptions = $subscriptions.Length;
 $counter = 1;
 Write-Output "Successfully retrieved $($totalSubscriptions) subscriptions for user - $($username)";
