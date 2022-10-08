@@ -1,0 +1,7 @@
+$subId = "xxxxxxxxxx-4xxx-4xxxx-xxxxxxxxxx";
+$rg = "xxxxxxxxxxxxxxxx";
+$funcName = "xxxxxxxxxxxxxxx";
+az account set -s $subId;
+az configure --defaults group=$rg;
+
+az functionapp config appsettings set --name $funcName --resource-group $rg --settings "SettingName=SettingValue";
