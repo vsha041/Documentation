@@ -1,4 +1,5 @@
 The following command shows you all the groups that the user belongs to in Azure. 
 You can find the object ID of the user by searching for that user in the Azure Active Directory in the Azure Portal.
 
+Connect-AzureAD
 Get-AzureADUser -ObjectId xxxxxxxxxx-4xxx-4xxxx-xxxxxxxxxx | Get-AzureADUserMembership
