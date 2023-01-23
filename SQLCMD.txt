@@ -1,0 +1,1 @@
+sqlcmd -I -S serverNameGoesHere -U usernameGoesHere -P passwordHere -d datbaseNameGoesHere -i "C:\Users\SomeUser\Desktop\Data\file.sql"
