@@ -1,3 +1,4 @@
-1. To enable connection requests to use saved credentials, follow these steps.
+(1)
+To enable connection requests to use saved credentials, follow these steps.
 File -> Options -> Types -> Remote Desktop Manager, select FreeRDP as your RDP engine
-
+Reference - https://forum.devolutions.net/topics/31421/not-allowing-connection-requests-using-saved-credentials-in-rdp--serve
