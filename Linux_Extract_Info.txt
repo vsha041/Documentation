@@ -1,0 +1,5 @@
+ps -ef | grep jav - find the process ID of java  process
+cat /proc/cpuinfo - find CPU information of the machine
+pwdx <PID> - find the path of the running process
+grep MemTotal /proc/meminfo - find the total RAM on the system
+cat /etc/*-release - find the OS information of the system
