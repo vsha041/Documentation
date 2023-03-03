@@ -1,0 +1,9 @@
+# to undo all the commits, just find the commit number where you want to undo until and run this commad
+# after the below command, the latest commit will be xxxxxxx and everything above it will be lost
+git reset --hard xxxxxxx
+
+# but this undoes single commit so yo might have to run it again and again
+git reset --hard HEAD~1
+
+# undo pending changes (i.e. changes not commited yet)
+git reset --hard
