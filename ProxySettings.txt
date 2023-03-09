@@ -8,11 +8,13 @@ A)DISABLE PROXY - To disable / clear the proxy settings that you see under IE ->
 i) First you need allow users (including admins) to be able to change proxy settings. Start gpedit.msc and go to Local Computer Policy
 -> Computer Configuration -> Administrative Templates -> Windows Components -> Internet Explorer -> Prevent changing proxy settings -> Disable this setting.
 
-ii) You can start an admin command prompt and then run this command "C:\Program Files\Internet Explorer\iexplore.exe" -extoff. 
+ii) Option 1 - You can start an admin command prompt and then run this command "C:\Program Files\Internet Explorer\iexplore.exe" -extoff. 
 You can use Process Explorer Integrity column to verify if IE is running as an Admin or not. 
 Then again go to IE -> Internet Options -> Connections -> LAN settings and uncheck "use automatic configuration script" 
 and check "automatically detect settings" and click OK. 
 This will also change the global windows proxy settings that you see under Settings -> Network and Internet -> Proxy.
+
+ii) Option 2 - Open registry editor and navigate to HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings and set ProxyEnable to 0. There is another setting AutoConfigURL with the PAC file URL but no need to touch that.
 
 B)ENABLE PROXY - If you are using a VPN or ZPA (Zscaler Private Access), through which you can connect to company's network then you might be able to use Proxy. 
 But it might require authentication. In that case, start IE "C:\Program Files\Internet Explorer\iexplore.exe" -extoff 
