@@ -1,0 +1,7 @@
+// Query 1 - Extract text between two phrases 'Some cat (' and ')'
+
+exceptions
+| where operation_Name == 'POST /api/v2/some-endpoint'
+| extend extracted = extract(@"Some cat \((.*?)\)", 1, innermostMessage)
+| summarize count() by extracted
+| order by count_ desc
