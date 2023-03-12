@@ -1,7 +1,21 @@
 // Query 1 - Extract text between two phrases 'Some cat (' and ')'
 
+// Azure Kusto Query
 exceptions
 | where operation_Name == 'POST /api/v2/some-endpoint'
 | extend extracted = extract(@"Some cat \((.*?)\)", 1, innermostMessage)
 | summarize count() by extracted
 | order by count_ desc
+
+// Python Program
+import re
+
+with open('input.txt', 'r') as f:
+    file_contents = f.read()
+
+pattern = r'Some cat \((.*?)\)'
+matches = re.findall(pattern, file_contents, flags=re.DOTALL)
+
+with open('output.txt', 'w') as f:
+    for match in matches:
+        f.write(match + '\n')
