@@ -1,0 +1,6 @@
+POST name_of_the_index_xxxx/_update/document_id_xxxx
+{
+  "doc" : {
+    "name_of_the_field_xxxx": "some value xxxx"
+  }
+}
