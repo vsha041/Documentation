@@ -1,0 +1,10 @@
+// Add the below code if you don't want browser to send requests to the server if the URL contains cat-dog in it. Instead the request will go to fiddler and fail.
+// This can be useful if you have a problematic request and want to see how the website behaves if that problematic request never gets sent to the server.
+// the below code needs to be added inside the static method - OnBeforeRequest
+
+// See more here - https://www.telerik.com/blogs/understanding-fiddlerscript
+
+if( oSession.fullUrl.Contains("cat-dog"))
+{			
+			oSession.host = "localhost:8888";
+}
