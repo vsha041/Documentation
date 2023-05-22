@@ -15,7 +15,7 @@ void Main()
 		"943551"
 	};
 	
-	var numberOfBatches = ids.Count / batchSize + (ids.Count % batchSize == 0 ? 0 : 1);
+	var numberOfBatches = (ids.Count / batchSize) + (ids.Count % batchSize == 0 ? 0 : 1);
 	for (int batch = 1; batch <= numberOfBatches; batch++){
 		var batchedData = ids.GetNextBatch(batch, batchSize, numberOfBatches);
 		batchedData.ForEach(d => Console.Write($"{d},"));
