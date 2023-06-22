@@ -1,0 +1,5 @@
+CASE 1
+Automatically take a dump file when a process crashes with Stackoverflow Exception.
+procdump -e 1 -f C00000FD.STACK_OVERFLOW -g -ma PID  C:\Temp\fileName.dmp
+After taking the dump file, you can use NTSD, WINDBG or DebugDiag to find the call stack of the code causing the problem.
+Reference - https://stackoverflow.com/questions/19049237/procdump-not-creating-dumps-for-stackoverflow-exception
