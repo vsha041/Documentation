@@ -3,8 +3,10 @@ Automatically take a dump file when a process crashes with Stackoverflow Excepti
 procdump -e 1 -f C00000FD.STACK_OVERFLOW -g -ma PID  C:\Temp\fileName.dmp
 After taking the dump file, you can use NTSD, WINDBG or DebugDiag to find the call stack of the code causing the problem.
 Reference - https://stackoverflow.com/questions/19049237/procdump-not-creating-dumps-for-stackoverflow-exception
+
 CASE 2
 There is a thread in WinDBG with too many exceptions and nested exceptions. To see all the exceptions run these commands.
 !threads *After loading SOS.dll, run this command to view all managed threads
 ~82e!pe *Find the thread that has exception and run this command to view exception
 ~82e!pe -nested *Find the thread that has exception and run this command to view all nested exceptions
+Reference - https://stackoverflow.com/questions/28904015/determining-thread-that-throw-an-exception-from-a-dump-file
