@@ -1,3 +1,8 @@
+CASE 0
+You want to view exceptions happening in a process.
+procdump -e 1 -f "xyz" -t PID (view exceptions occurring in a process)
+Note that the full exception information may not be shown for non IIS Processes.
+
 CASE 1
 Automatically take a dump file when a process crashes with Stackoverflow Exception.
 procdump -e 1 -f C00000FD.STACK_OVERFLOW -g -ma PID  C:\Temp\fileName.dmp
