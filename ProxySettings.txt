@@ -2,6 +2,8 @@ You can do a test by running this powershell command (Invoke-WebRequest https://
 to make sure whether Microsoft Applications on your computer can connect to Internet or not. You should get a response within few milli-seconds. 
 If you don't then you have couple of options discussed below.
 
+
+
 A)DISABLE PROXY - To disable / clear the proxy settings that you see under IE -> Internet Options -> Connections -> LAN settings or under Windows Settings
 -> Network and Internet -> Proxy, you need to do two steps
 
@@ -15,6 +17,11 @@ and check "automatically detect settings" and click OK.
 This will also change the global windows proxy settings that you see under Settings -> Network and Internet -> Proxy.
 
 ii) Option 2 - Open registry editor and navigate to HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings and set ProxyEnable to 0. There is another setting AutoConfigURL with the PAC file URL but no need to touch that.
+
+iii) Option 3 - Open registry editor and navigate to HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Internet Settings and there will be a key there that starts with Proxy, delete that key. But before deleting it take a screenshot of that key.
+
+
+
 
 B)ENABLE PROXY - If you are using a VPN or ZPA (Zscaler Private Access), through which you can connect to company's network then you might be able to use Proxy. 
 But it might require authentication. In that case, start IE "C:\Program Files\Internet Explorer\iexplore.exe" -extoff 
