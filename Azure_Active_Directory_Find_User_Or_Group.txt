@@ -5,5 +5,11 @@ You can find the object ID of the user by searching for that user in the Azure A
 Connect-AzureAD
 Get-AzureADUser -ObjectId xxxxxxxxxx-4xxx-4xxxx-xxxxxxxxxx | Get-AzureADUserMembership
 
-2)
+You can use the following command to find the object ID of a user
+1)
 az ad user show --id myemail@cat.com --query "id" --output json | ConvertFrom-Json
+
+You can use these commands to find out the object IDs and email address of the users that belong to a group (provided you have the azure group object id).
+1)
+Connect-AzureAD
+Get-AzureADGroupMember -ObjectId xxxxxxxxxx-4xxx-4xxxx-xxxxxxxxxx
