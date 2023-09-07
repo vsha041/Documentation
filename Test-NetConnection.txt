@@ -1,0 +1,11 @@
+while (1) { 
+
+$obj = Test-NetConnection wwnz-system-customer-uat.wwnz-uat-ase.p.azurewebsites.net -Port 443
+
+Write-Host ($obj | Out-String)
+
+if(-not $obj.TcptestSucceeded)
+
+    {Out-File -FilePath .\FailedTNCResult_$((Get-Date).ToString("yyyyMMdd_HHmmss")).txt -InputObject $obj -Encoding ASCII}
+
+Start-Sleep -Seconds 10}
