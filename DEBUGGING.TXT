@@ -15,3 +15,9 @@ There is a thread in WinDBG with too many exceptions and nested exceptions. To s
 ~82e!pe *Find the thread that has exception and run this command to view exception
 ~82e!pe -nested *Find the thread that has exception and run this command to view all nested exceptions
 Reference - https://stackoverflow.com/questions/28904015/determining-thread-that-throw-an-exception-from-a-dump-file
+
+CASE 3
+
+Instruction to take a dump automatically on crash are here
+https://www.tessferrandez.com/blog/2010/08/23/getting-full-user-mode-dumps-automatically-when-your-process-crashes.html
+https://learn.microsoft.com/en-nz/windows/win32/wer/collecting-user-mode-dumps?redirectedfrom=MSDN
