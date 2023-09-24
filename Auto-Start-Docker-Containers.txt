@@ -1,2 +1,6 @@
+# step - 1
+first run docker ps command to get the all  container IDs
+
+# step - 2
 # xxxxxxxxx is the unique container ID and repeat the below one-time only command for each container or automate it
 "C:\Program Files\Docker\Docker\resources\bin\docker.exe" update --restart=always xxxxxxxxx
