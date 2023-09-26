@@ -1,2 +1,5 @@
 # sort all files in increasing order of file size inside a folder
 sudo du -sh * | sort -h
+
+# becoming root user immediately
+sudo -i
