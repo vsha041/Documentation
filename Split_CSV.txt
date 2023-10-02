@@ -1,1 +1,7 @@
-split -l 500000 fileName.csv
+into files of size 500MB each: 
+split myLargeFile.txt -b 500m
+
+into files with 10000 lines each: 
+split myLargeFile.txt -l 10000
+
+https://stackoverflow.com/questions/31786287/how-to-split-large-text-file-in-windows
