@@ -1,0 +1,25 @@
+--GET TABLE SIZE EFFICIENTLY
+DECLARE @TableName sysname
+SET @TableName = 'put the table name here'
+
+SELECT TBL.object_id, TBL.name, SUM(PART.rows) AS rows
+FROM sys.tables TBL
+INNER JOIN sys.partitions PART ON TBL.object_id = PART.object_id
+INNER JOIN sys.indexes IDX ON PART.object_id = IDX.object_id
+AND PART.index_id = IDX.index_id
+WHERE TBL.name = @TableName
+AND IDX.index_id < 2
+GROUP BY TBL.object_id, TBL.name;
+
+--FORMATTING
+
+format(85463, 'N0')
+--this presents your output with commas, the 0 specifies how many decimal places
+format(1535.36,'C')
+--this presents your output as dollar value 
+
+FORMAT(123456.789, 'N') AS "Number",
+FORMAT(123456.789, 'P') AS "Percent",
+FORMAT(123456.789, 'C') AS "Currency";
+
+https://database.guide/how-to-format-numbers-with-commas-in-sql-server/
