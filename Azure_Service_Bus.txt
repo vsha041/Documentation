@@ -1,0 +1,8 @@
+Get Azure Service Bus Connection String
+
+POST https://management.azure.com/subscriptions/{subscriptionguid}/resourceGroups/{resourcegroup}/providers/Microsoft.ServiceBus/namespaces/{serviceBusNamespace}/AuthorizationRules/RootManageSharedAccessKey/listKeys?api-version=2022-10-01-preview
+
+And you can generate the bearer token with this command
+
+az login
+az account get-access-token
