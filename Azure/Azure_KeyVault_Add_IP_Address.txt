@@ -1,0 +1,9 @@
+$subId = "";
+$rg = "";
+$kvname = "";
+$objectid = "";
+
+az account set -s $subId;
+az configure --defaults group=$rg;
+
+az keyvault network-rule add --name $kvname --ip-address 123.456.789.012 --resource-group $rg
