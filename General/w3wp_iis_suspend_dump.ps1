@@ -6,6 +6,6 @@ $workerpid = Get-Process w3wp | Sort ws -Descending | Select -First 1 -ExpandPro
 #Add -accepteula to the sysinternals calls if you want to bypass the initial EULA prompt on new servers
 & "C:\Temp\PSTools\pssuspend.exe" $iispid 
 Write-Output "Creating memory dump for w3wp PID $workerpid"
-mkdir d:\temp
+md -Force d:\temp
 & "C:\Temp\Procdump\procdump.exe" -ma $workerpid D:\Temp\w3wp_process.dmp
 & "C:\Temp\PSTools\pssuspend.exe" $iispid -r
