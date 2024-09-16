@@ -4,8 +4,8 @@ $iispid = Get-Process svchost | ?{$_.modules.ModuleName -eq "iisw3adm.dll"} | Se
 $workerpid = Get-Process w3wp | Sort ws -Descending | Select -First 1 -ExpandProperty Id
 #move to location where you want to save the dump files
 #Add -accepteula to the sysinternals calls if you want to bypass the initial EULA prompt on new servers
-& "C:\Temp\PSTools\pssuspend.exe" $iispid 
+& "C:\Temp\PSTools\pssuspend.exe" $iispid -accepteula
 Write-Output "Creating memory dump for w3wp PID $workerpid"
 md -Force d:\temp
-& "C:\Temp\Procdump\procdump.exe" -ma $workerpid D:\Temp\w3wp_process.dmp
-& "C:\Temp\PSTools\pssuspend.exe" $iispid -r
+& "C:\Temp\Procdump\procdump.exe" -ma $workerpid D:\Temp\w3wp_process.dmp -accepteula
+& "C:\Temp\PSTools\pssuspend.exe" $iispid -r -accepteula
