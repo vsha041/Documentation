@@ -1,0 +1,2 @@
+clear screen and remove and remove all scroll-back
+clear && printf '\e[3J'
