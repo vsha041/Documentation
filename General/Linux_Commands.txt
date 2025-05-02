@@ -3,3 +3,6 @@ sudo du -sh * | sort -h
 
 # becoming root user immediately
 sudo -i
+
+#clear screen and remove and remove all scroll-back
+clear && printf '\e[3J'
