@@ -1,0 +1,7 @@
+# https://stackoverflow.com/questions/45333852/retrieve-service-bus-primaryconnectionstring-with-az-cli
+
+$subId = "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx";
+$rg = "xxxxxxxxx";
+az account set -s $subId;
+az configure --defaults group=$rg;
+az servicebus namespace authorization-rule keys list --namespace-name XXXXXXXXXXXXX --resource-group $rg --subscription $subId --name RootManageSharedAccessKey --query primaryConnectionString -o tsv
