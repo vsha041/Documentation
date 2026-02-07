@@ -12,6 +12,6 @@
 4. Download the latest Nuget executable from Nuget website
 5. Run the following command through admin cmd prompt.
 
-`nuget source Add -Name "SomeName" -Source "https://pkgs.dev.azure.com/your_organization/_packaging/your_organization_packages/nuget/v3/index.json" -UserName firstName.lastName@your_organization.co.nz -Password PUT_THE_TOKEN`
+`nuget source Add -Name "SomeName" -Source "https://pkgs.dev.azure.com/your_organization/_packaging/your_organization_packages/nuget/v3/index.json" -UserName firstName.lastName@your_organization.co.nz -Password PUT_THE_TOKEN` -ConfigFile "C:\YourNugetConfigFilePath\NuGet.Config"
 
-Note that your Nuget.config file located at ***%appdata%/nuget*** would have been modified.
+Note that your Nuget.config file located at ***%appdata%/nuget*** would have been modified if the last parameter is not passed.
