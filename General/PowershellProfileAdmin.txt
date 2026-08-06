@@ -1,0 +1,22 @@
+Import-Module PSReadLine;
+
+Set-PSReadLineOption -PredictionSource History;
+Set-PSReadLineOption -PredictionViewStyle ListView;
+Set-PSReadLineOption -EditMode Windows;
+Set-PSReadLineOption -PredictionSource HistoryAndPlugin;
+
+function prompt {
+
+    # Detect Admin
+    $isAdmin = ([Security.Principal.WindowsPrincipal] `
+        [Security.Principal.WindowsIdentity]::GetCurrent() `
+    ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator);
+
+    $adminTag = if ($isAdmin) { " 🔴 ADMIN" } else { "" };
+
+    $comp = $env:COMPUTERNAME;
+    $date = Get-Date -Format "dd-MMM-yy HH:mm:ss";
+    $path = $PWD;
+
+    return "`n[$comp] $date$adminTag`n$path`n> ";
+}

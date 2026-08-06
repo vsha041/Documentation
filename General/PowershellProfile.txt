@@ -1,0 +1,14 @@
+Import-Module PSReadLine;
+
+Set-PSReadLineOption -PredictionSource History;
+Set-PSReadLineOption -PredictionViewStyle ListView;
+Set-PSReadLineOption -EditMode Windows;
+Set-PSReadLineOption -PredictionSource HistoryAndPlugin;
+
+function prompt {
+    $comp = $env:COMPUTERNAME;
+    $date = Get-Date -Format "dd-MMM-yy HH:mm:ss";
+    $path = $PWD;
+
+    return "`n[$comp] $date`n$path`n> ";
+}
