@@ -1,0 +1,23 @@
+// starting stopping
+cd learn-apache-flink-101-exercises
+docker compose up --build -d
+docker compose ps
+docker ps
+docker compose logs
+docker compose logs -f
+docker compose down -v
+docker compose run sql-client
+docker system df // docker disk usage
+docker system df -v // docker disk usage with more details
+
+Flink SQL>
+
+help;
+quit;
+SET 'sql-client.verbose' = 'true'; -- enable detailed logging
+SET 'sql-client.execution.result-mode' = 'tableau';
+SET 'sql-client.execution.result-mode' = 'table';
+SELECT * FROM bounded_pageviews LIMIT 10;
+SET 'execution.runtime-mode' = 'batch'; -- ValidationException: Querying an unbounded table 'default_catalog.default_database.streaming_pageviews' in batch mode is not allowed. The table source is unbounded.
+SET 'execution.runtime-mode' = 'streaming';
+SELECT COUNT(*) AS `count` FROM streaming_pageviews;
