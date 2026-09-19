@@ -1,0 +1,28 @@
+# this is a bash script
+# first install qpdf using - sudo apt install qpdf
+
+input="name_of_the_file.pdf"
+
+ranges=(
+  "1-21"
+  "22-37"
+  "38-52"
+  "53-67"
+  "68-87"
+  "88-101"
+  "102-121"
+  "122-134"
+  "135-143"
+  "144-165"
+  "166-172"
+  "173-181"
+  "182-193"
+  "194-209"
+  "210-216"
+  "217-227"
+)
+
+for i in "${!ranges[@]}"; do
+    printf -v num "%02d" $((i+1))
+    qpdf "$input" --pages . "${ranges[$i]}" -- "part${num}.pdf"
+done
