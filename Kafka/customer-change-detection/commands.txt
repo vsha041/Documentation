@@ -1,0 +1,195 @@
+docker ps -a
+docker images
+
+mkdir -p ~/projects/customer-change-detection
+cd ~/projects/customer-change-detection
+
+docker compose up -d --build kafka jobmanager taskmanager
+docker compose ps
+
+docker compose exec kafka \
+  /opt/kafka/bin/kafka-topics.sh \
+  --bootstrap-server kafka:9092 \
+  --create \
+  --topic customer-topic-a \
+  --partitions 1 \
+  --replication-factor 1
+  
+docker compose exec kafka \
+  /opt/kafka/bin/kafka-topics.sh \
+  --bootstrap-server kafka:9092 \
+  --create \
+  --topic customer-topic-b \
+  --partitions 1 \
+  --replication-factor 1
+
+docker compose exec kafka \
+  /opt/kafka/bin/kafka-topics.sh \
+  --bootstrap-server kafka:9092 \
+  --list
+
+# expected output
+customer-topic-a
+customer-topic-b
+
+# start Flink SQL Client
+docker compose run --rm sql-client
+
+SET 'execution.runtime-mode' = 'streaming';
+
+#create source table
+
+CREATE TABLE customer_source (
+    CustomerId STRING,
+
+    firstNameEncrypted STRING,
+    firstNameHashed STRING,
+    firstNameChanged BOOLEAN,
+
+    lastNameEncrypted STRING,
+    lastNameHashed STRING,
+    lastNameChanged BOOLEAN,
+
+    DOBEncrypted STRING,
+    DOBHashed STRING,
+    DOBChanged BOOLEAN,
+
+    proc_time AS PROCTIME()
+)
+WITH (
+    'connector' = 'kafka',
+    'topic' = 'customer-topic-a',
+    'properties.bootstrap.servers' = 'kafka:9092',
+    'properties.group.id' = 'customer-demo',
+    'scan.startup.mode' = 'earliest-offset',
+    'format' = 'json'
+);
+  
+#create destination table
+
+CREATE TABLE customer_changes (
+    CustomerId STRING,
+
+    firstNameEncrypted STRING,
+    firstNameHashed STRING,
+    firstNameChanged BOOLEAN,
+
+    lastNameEncrypted STRING,
+    lastNameHashed STRING,
+    lastNameChanged BOOLEAN,
+
+    DOBEncrypted STRING,
+    DOBHashed STRING,
+    DOBChanged BOOLEAN
+)
+WITH (
+    'connector' = 'kafka',
+    'topic' = 'customer-topic-b',
+    'properties.bootstrap.servers' = 'kafka:9092',
+
+    'key.format' = 'raw',
+    'key.fields' = 'CustomerId',
+
+    'value.format' = 'json',
+    'value.fields-include' = 'ALL'
+);
+
+SHOW TABLES;
+
+#expected output
+customer_changes
+customer_source
+
+# Main change detection SQL
+
+INSERT INTO customer_changes
+SELECT
+    CustomerId,
+
+    firstNameEncrypted,
+    firstNameHashed,
+    CASE
+        WHEN firstNameHashed IS DISTINCT FROM prevFirstNameHash
+        THEN TRUE
+        ELSE CAST(NULL AS BOOLEAN)
+    END AS firstNameChanged,
+
+    lastNameEncrypted,
+    lastNameHashed,
+    CASE
+        WHEN lastNameHashed IS DISTINCT FROM prevLastNameHash
+        THEN TRUE
+        ELSE CAST(NULL AS BOOLEAN)
+    END AS lastNameChanged,
+
+    DOBEncrypted,
+    DOBHashed,
+    CASE
+        WHEN DOBHashed IS DISTINCT FROM prevDOBHash
+        THEN TRUE
+        ELSE CAST(NULL AS BOOLEAN)
+    END AS DOBChanged
+
+FROM (
+    SELECT
+        *,
+
+        LAG(CustomerId, 1) OVER (
+            PARTITION BY CustomerId
+            ORDER BY proc_time
+        ) AS prevCustomerId,
+
+        LAG(firstNameHashed, 1) OVER (
+            PARTITION BY CustomerId
+            ORDER BY proc_time
+        ) AS prevFirstNameHash,
+
+        LAG(lastNameHashed, 1) OVER (
+            PARTITION BY CustomerId
+            ORDER BY proc_time
+        ) AS prevLastNameHash,
+
+        LAG(DOBHashed, 1) OVER (
+            PARTITION BY CustomerId
+            ORDER BY proc_time
+        ) AS prevDOBHash
+
+    FROM customer_source
+) AS history
+
+WHERE prevCustomerId IS NOT NULL
+  AND (
+       firstNameHashed IS DISTINCT FROM prevFirstNameHash
+    OR lastNameHashed IS DISTINCT FROM prevLastNameHash
+    OR DOBHashed IS DISTINCT FROM prevDOBHash
+  );
+
+# publish test message
+cd ~/projects/customer-change-detection
+
+docker compose exec -T kafka \
+  /opt/kafka/bin/kafka-console-producer.sh \
+  --bootstrap-server kafka:9092 \
+  --topic customer-topic-a \
+  --property "parse.key=true" \
+  --property "key.separator=|" <<'EOF'
+CUST-98765432|{"CustomerId":"CUST-98765432","firstNameEncrypted":"enc_alex_1","firstNameHashed":"hash_alex","firstNameChanged":null,"lastNameEncrypted":"enc_morgan_1","lastNameHashed":"hash_morgan","lastNameChanged":null,"DOBEncrypted":"enc_1990_1","DOBHashed":"hash_1990","DOBChanged":null}
+CUST-98765432|{"CustomerId":"CUST-98765432","firstNameEncrypted":"enc_alex_2","firstNameHashed":"hash_alex","firstNameChanged":null,"lastNameEncrypted":"enc_morgan_2","lastNameHashed":"hash_morgan","lastNameChanged":null,"DOBEncrypted":"enc_1991_1","DOBHashed":"hash_1991","DOBChanged":null}
+CUST-98765432|{"CustomerId":"CUST-98765432","firstNameEncrypted":"enc_alex_3","firstNameHashed":"hash_alex","firstNameChanged":null,"lastNameEncrypted":"enc_morgan_3","lastNameHashed":"hash_morgan","lastNameChanged":null,"DOBEncrypted":"enc_1991_2","DOBHashed":"hash_1991","DOBChanged":null}
+CUST-98765432|{"CustomerId":"CUST-98765432","firstNameEncrypted":"enc_alexander","firstNameHashed":"hash_alexander","firstNameChanged":null,"lastNameEncrypted":"enc_morgan_4","lastNameHashed":"hash_morgan","lastNameChanged":null,"DOBEncrypted":"enc_1991_3","DOBHashed":"hash_1991","DOBChanged":null}
+EOF
+
+#Verify messages in topic B
+docker compose exec kafka \
+  /opt/kafka/bin/kafka-console-consumer.sh \
+  --bootstrap-server kafka:9092 \
+  --topic customer-topic-b \
+  --from-beginning \
+  --property print.key=true \
+  --property "key.separator= | "
+  
+# Expected
+Message 1	First snapshot	No output
+Message 2	DOB hash changed	Output
+Message 3	Only ciphertext changed	No output
+Message 4	First-name hash changed	Output
